@@ -34,9 +34,12 @@ class Joint_model(nn.Module):
         self.criterion = nn.CrossEntropyLoss()
 
     def forward_logit(self, x, mask):
+        # if isinstance(x, tuple):
         x, x_char = x
         x_len = torch.sum(x != 0, dim=-1)
-        x_emb = self.emb_drop(self.embed(x))    # [b,d,300]
+        x_emb = self.emb_drop(self.embed(x))  # [b,d,300]
+        # x_len = x_len.to(x.device)
+        x_len = x_len.to("cpu")
         """CNN"""
         x_emb = self.CNN(x_emb)
 
